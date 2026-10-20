@@ -1698,14 +1698,16 @@ async def main():
     
     print("Фейсит бот запущен...")
     logger.info("Faceit Bot starting...")
-    
-    try:
-        await dp.start_polling(bot)
-    except Exception as e:
-        logger.error(f"Error in main: {e}")
-    finally:
-        await db.close_connection()
-        await bot.session.close()
+
+try:
+    await bot.delete_webhook(drop_pending_updates=False)
+    await dp.start_polling(bot)
+except Exception as e:
+    logger.error(f"Error in main: {e}")
+finally:
+    await db.close_connection()
+    await bot.session.close()
+
 
 if __name__ == "__main__":
     asyncio.run(main())
